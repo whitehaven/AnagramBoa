@@ -13,20 +13,23 @@ visited_letters = []
 for letters in targetWord:
     visited_letters.append(False)
 
-# build dictionary set
-dictFile = open(dictFileAddress)
+# TODO rebuild dictionary set to evade \n issue
 dictionary = set()
 
-tempEntry = dictFile.readline()
-while tempEntry != "":
-    dictionary.add(tempEntry)
-    tempEntry = dictFile.readline()
+with open(dictFileAddress, 'r+') as dictFile:
+    dictFile.seek(0, 0)  # go to the end of the file
+    if dictFile.read(1) != '\n':  # add missing \n if not there, will mess it up otherwise
+        dictFile.write('\n')
+        dictFile.flush()
+        dictFile.seek(0)
+
+    dictionary.update(dictFile.read().splitlines())
 
 # build fast dictionary letters-at-position set (list of sets of letters)
 
-# build a temp set, add to list
 letterTrees = []
 for letter in targetWord:
+    # build a temp set, add to list
     tempSet = set()
     letterTrees.append(tempSet)
 
