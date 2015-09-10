@@ -5,7 +5,7 @@ from sys import argv
 # take in dictionary file address
 script, dictFileAddress = argv
 
-targetWord = "lormncae"  # subsitute for input() something
+targetWord = "cormnlae"  # subsitute for input() something
 
 visited_letters = []
 
@@ -52,12 +52,14 @@ completeAnagrams = []
 #           return false
 
 def isWord(word, index, word_so_far, visited_letters, words_so_far):
-    if word[index] in letterTrees[index]:
+    if word[index] in letterTrees[len(word_so_far)]:
         # add letter onto new word (must create new one because strings are immutable)
         new_word_so_far = word_so_far + word[index]
 
+        # make new visited letters list to support recursion
+        new_visited_letters = list(visited_letters)
         # mark visited_letters
-        visited_letters[index] = True
+        new_visited_letters[index] = True
 
         if new_word_so_far in dictionary:
             words_so_far.append(new_word_so_far)
@@ -66,9 +68,9 @@ def isWord(word, index, word_so_far, visited_letters, words_so_far):
             # if there's no False record in visited_letters, we're at the end
             if not (False in visited_letters):
                 completeAnagrams.append(words_so_far)
-        for letter in visited_letters:
-            if letter == True:
-                isWord(word, index + 1, new_word_so_far, visited_letters, words_so_far)
+        for index in range(0, len(visited_letters) - 1):
+            if new_visited_letters[index] == False:  # if unvisited, send function there
+                isWord(word, index, new_word_so_far, new_visited_letters, words_so_far)
     return False
 
 
