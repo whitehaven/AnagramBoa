@@ -13,7 +13,7 @@ visitedLetters = []
 for letters in targetWord:
     visitedLetters.append(False)
 
-# UNVER build dictionary set
+# build dictionary set
 dictFile = open(dictFileAddress)
 dictionary = set()
 
@@ -22,7 +22,7 @@ while tempEntry != "":
     dictionary.add(tempEntry)
     tempEntry = dictFile.readline()
 
-# UNVER build fast dictionary letters-at-position set (list of sets of letters)
+# build fast dictionary letters-at-position set (list of sets of letters)
 
 # build a temp set, add to list
 letterTrees = []
