@@ -1,13 +1,30 @@
 __author__ = 'WhiteHaven'
 
+from sys import argv
+
+# take in dictionary file address
+script, dictFileAddress = argv
+
 targetWord = "lormncae"  # subsitute for input() something
 
 visitedLetters = []
 
-# create visitedLetters
+# create visitedLetters with as many list componenets as letters in targetWord
 for letters in targetWord:
     visitedLetters.append(False)
 
+# TODO build dictionary set
+dictFile = open(dictFileAddress)
+dictionary = set()
+
+tempEntry = dictFile.readline()
+while tempEntry != "":
+    dictionary.add(tempEntry)
+    tempEntry = dictFile.readline()
+
+# TODO build fast dictionary letters-at-position set
+
+# TODO main algorithm
 # for each starting letter
 #   is word(word, index, visitedLetters, wordsSoFar)
 #       if letter in dictionary(char)
