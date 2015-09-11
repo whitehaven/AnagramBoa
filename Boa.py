@@ -28,11 +28,11 @@ for letter in targetWord:
     letterTrees.append(tempSet)
 
 for dword in dictionary:
-    for letter in range(0, len(dword) - 1):
+    for letter in range(0, len(dword)):
         letterTrees[letter].add(dword[letter])
 
 partialAnagrams = []
-completeAnagrams = []
+completeAnagrams = [[]]
 
 
 # TODO write recursive isWord() function
@@ -65,7 +65,7 @@ def isWord(word, index, word_so_far, visited_letters, words_so_far):
             # if there's no False record in visited_letters, we're at the end
             if not (False in visited_letters):
                 completeAnagrams.append(words_so_far)
-        for index in range(0, len(visited_letters) - 1):
+        for index in range(0, len(new_visited_letters)):
             if new_visited_letters[index] == False:  # if unvisited, send function there
                 isWord(word, index, new_word_so_far, new_visited_letters, words_so_far)
     return False
@@ -73,7 +73,7 @@ def isWord(word, index, word_so_far, visited_letters, words_so_far):
 
 # TODO main algorithm
 # for each starting letter
-for letter in range(0, len(targetWord) - 1):
+for letter in range(0, len(targetWord)):
     isWord(targetWord, letter, "", visited_letters, [])
 
 
