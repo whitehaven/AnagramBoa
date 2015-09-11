@@ -63,6 +63,11 @@ def isWord(word, index, word_so_far, visited_letters, words_so_far):
             new_words_so_far.append(new_word_so_far)
             partialAnagrams.append(new_word_so_far)
 
+            # branch, assuming that first word, to view the next letter as part of the next word
+            for index in range(0, len(new_visited_letters)):
+                if new_visited_letters[index] == False:
+                    isWord(word, index, "", new_visited_letters, new_words_so_far)
+
             # if there's no False record in visited_letters, we're at the end
             if not (False in new_visited_letters):
                 completeAnagrams.append(new_words_so_far)
