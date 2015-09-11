@@ -32,7 +32,7 @@ for dword in dictionary:
         letterTrees[letter].add(dword[letter])
 
 partialAnagrams = []
-completeAnagrams = [[]]
+completeAnagrams = []
 
 
 # TODO write recursive isWord() function
@@ -59,12 +59,13 @@ def isWord(word, index, word_so_far, visited_letters, words_so_far):
         new_visited_letters[index] = True
 
         if new_word_so_far in dictionary:
-            words_so_far.append(new_word_so_far)
+            new_words_so_far = list(words_so_far)
+            new_words_so_far.append(new_word_so_far)
             partialAnagrams.append(new_word_so_far)
 
             # if there's no False record in visited_letters, we're at the end
-            if not (False in visited_letters):
-                completeAnagrams.append(words_so_far)
+            if not (False in new_visited_letters):
+                completeAnagrams.append(new_words_so_far)
         for index in range(0, len(new_visited_letters)):
             if new_visited_letters[index] == False:  # if unvisited, send function there
                 isWord(word, index, new_word_so_far, new_visited_letters, words_so_far)
