@@ -5,7 +5,7 @@ from sys import argv
 # take in dictionary file address
 script, dictFileAddress = argv
 
-targetWord = "cormnlae"  # subsitute for input() something
+targetWord = "donaldtrump"  # subsitute for input() something
 
 visited_letters = []
 
@@ -13,7 +13,6 @@ visited_letters = []
 for letters in targetWord:
     visited_letters.append(False)
 
-# TODO rebuild dictionary set to evade \n issue
 dictionary = set()
 
 with open(dictFileAddress, "r+") as dictFile:
@@ -31,11 +30,13 @@ for dword in dictionary:
     for letter in range(0, len(dword)):
         letterTrees[letter].add(dword[letter])
 
-partialAnagrams = []
-completeAnagrams = []
+# TODO remake word containers as tuples to allow their use in sets, allowing
+
+partialAnagrams = set()
+completeAnagrams = set()
 
 
-# TODO write recursive isWord() function
+# write recursive isWord() function
 #   is word(word, index, visitedLetters, visited_letters, wordsSoFar)
 #       if letter in dictionary(char)
 #           if complete word
@@ -59,9 +60,10 @@ def isWord(word, index, word_so_far, visited_letters, words_so_far):
         new_visited_letters[index] = True
 
         if new_word_so_far in dictionary:
-            new_words_so_far = list(words_so_far)
-            new_words_so_far.append(new_word_so_far)
-            partialAnagrams.append(new_word_so_far)
+            # write (words so far & new word) to new words (tuple) so far to continue to next word
+            new_words_so_far = words_so_far + (new_word_so_far,)
+            # write (words so far (may be () ) and new word to anagrams)
+            partialAnagrams.update(new_words_so_far)
 
             # branch, assuming that first word, to view the next letter as part of the next word
             for index in range(0, len(new_visited_letters)):
@@ -70,33 +72,35 @@ def isWord(word, index, word_so_far, visited_letters, words_so_far):
 
             # if there's no False record in visited_letters, we're at the end
             if not (False in new_visited_letters):
-                completeAnagrams.append(new_words_so_far)
+                completeAnagrams.update(new_words_so_far)
+        else:
+            new_words_so_far = words_so_far
         for index in range(0, len(new_visited_letters)):
             if new_visited_letters[index] == False:  # if unvisited, send function there
-                isWord(word, index, new_word_so_far, new_visited_letters, words_so_far)
+                isWord(word, index, new_word_so_far, new_visited_letters, new_words_so_far)
     return False
 
 
-# TODO main algorithm
+# main algorithm
 # for each starting letter
 for letter in range(0, len(targetWord)):
-    isWord(targetWord, letter, "", visited_letters, [])
+    isWord(targetWord, letter, "", visited_letters, ())
 
 
 # write output
 
-partialAnagrams = list(set(partialAnagrams))
+
 
 print("Partial Anagrams:\t %d" % (len(partialAnagrams)))
 if len(partialAnagrams) == 0:
     print("None")
 else:
-    for element in range(0, len(partialAnagrams)):
-        print("%d\t%s" % (element + 1, partialAnagrams[element]))
+    for element in partialAnagrams:
+        print("%s" % (element))
 
 print("Complete Anagrams:\t %d" % (len(completeAnagrams)))
 if len(completeAnagrams) == 0:
     print("None")
 else:
-    for element in range(0, len(completeAnagrams)):
-        print("%d\t%s" % (element + 1, completeAnagrams[element]))
+    for element in completeAnagrams:
+        print("%s" % (element))
