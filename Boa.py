@@ -76,13 +76,19 @@ def isWord(word, index, word_so_far, visited_letters, words_so_far):
 for letter in range(0, len(targetWord) - 1):
     isWord(targetWord, letter, "", visited_letters, [])
 
-# TODO write output
 
-print("Partial Anagrams: %d" % (len(partialAnagrams)))
+# write output
+
+print("Partial Anagrams:\t %d" % (len(partialAnagrams)))
 if len(partialAnagrams) == 0:
     print("None")
 else:
     for element in range(0, len(partialAnagrams)):
         print("%d\t%s" % (element + 1, partialAnagrams[element]))
 
-print()
+print("Complete Anagrams:\t %d" % (len(completeAnagrams)))
+if len(completeAnagrams) == 0:
+    print("None")
+else:
+    for element in range(0, len(completeAnagrams)):
+        print("%d\t%s" % (element + 1, completeAnagrams[element]))
