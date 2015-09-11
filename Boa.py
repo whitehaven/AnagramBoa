@@ -16,13 +16,7 @@ for letters in targetWord:
 # TODO rebuild dictionary set to evade \n issue
 dictionary = set()
 
-with open(dictFileAddress, 'r+') as dictFile:
-    dictFile.seek(0, 0)  # go to the end of the file
-    if dictFile.read(1) != '\n':  # add missing \n if not there, will mess it up otherwise
-        dictFile.write('\n')
-        dictFile.flush()
-        dictFile.seek(0)
-
+with open(dictFileAddress, "r+") as dictFile:
     dictionary.update(dictFile.read().splitlines())
 
 # build fast dictionary letters-at-position set (list of sets of letters)
@@ -81,3 +75,14 @@ def isWord(word, index, word_so_far, visited_letters, words_so_far):
 # for each starting letter
 for letter in range(0, len(targetWord) - 1):
     isWord(targetWord, letter, "", visited_letters, [])
+
+# TODO write output
+
+print("Partial Anagrams: %d" % (len(partialAnagrams)))
+if len(partialAnagrams) == 0:
+    print("None")
+else:
+    for element in range(0, len(partialAnagrams)):
+        print("%d\t%s" % (element + 1, partialAnagrams[element]))
+
+print()
