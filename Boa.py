@@ -85,6 +85,8 @@ for letter in range(0, len(targetWord)):
 
 # write output
 
+partialAnagrams = list(set(partialAnagrams))
+
 print("Partial Anagrams:\t %d" % (len(partialAnagrams)))
 if len(partialAnagrams) == 0:
     print("None")
