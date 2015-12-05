@@ -9,7 +9,7 @@ targetWord = "donaldtrump"  # subsitute for input() something
 
 visited_letters = []
 
-# create visitedLetters with as many list componenets as letters in targetWord
+# create visitedLetters with as many list components as letters in targetWord
 for letters in targetWord:
     visited_letters.append(False)
 
@@ -30,24 +30,31 @@ for dword in dictionary:
     for letter in range(0, len(dword)):
         letterTrees[letter].add(dword[letter])
 
-# TODO remake word containers as tuples to allow their use in sets, allowing
 
 partialAnagrams = set()
 completeAnagrams = set()
 
+# V2 algorithm
+"""
+presupposes list of sets
 
-# write recursive isWord() function
-#   is word(word, index, visitedLetters, visited_letters, wordsSoFar)
-#       if letter in dictionary(char)
-#           if complete word
-#               write to fragment anagrams
-#               update to wordsSoFar
-#               if on complete word (we know that) and we're out of letters
-#                   write to complete anagrams list
-#               for all un-visitedLetters
-#                   return is word(word, index+1, visitedLetters, wordsSoFar)
-#       elif (letters aren't in dictionary)
-#           return false
+current_word string
+current_words tuple
+partialAnagrams set of tuples
+
+completeAnagrams set of tuples
+
+isWord()
+    if letter is a possible permutation (then we know a word could come of it)
+        if letter completes a word
+            push to this most recent word into this round's tuple of words
+            push new tuple of words to partialAnagrams
+            if letter was the last one (and they're all used)
+                push new tuple of words to completeAnagrams
+        either way, send isWord to all remaining letters
+    else ( letter is not possible )
+        return false ( unwind recursion )
+"""
 
 def isWord(word, index, word_so_far, visited_letters, words_so_far):
     if word[index] in letterTrees[len(word_so_far)]:
@@ -63,7 +70,7 @@ def isWord(word, index, word_so_far, visited_letters, words_so_far):
             # write (words so far & new word) to new words (tuple) so far to continue to next word
             new_words_so_far = words_so_far + (new_word_so_far,)
             # write (words so far (may be () ) and new word to anagrams)
-            partialAnagrams.update(new_words_so_far)
+            partialAnagrams.update({tuple(sorted(new_words_so_far))})
 
             # branch, assuming that first word, to view the next letter as part of the next word
             for index in range(0, len(new_visited_letters)):
@@ -72,9 +79,10 @@ def isWord(word, index, word_so_far, visited_letters, words_so_far):
 
             # if there's no False record in visited_letters, we're at the end
             if not (False in new_visited_letters):
-                completeAnagrams.update(new_words_so_far)
+                completeAnagrams.update({tuple(sorted(new_words_so_far))})
         else:
             new_words_so_far = words_so_far
+
         for index in range(0, len(new_visited_letters)):
             if new_visited_letters[index] == False:  # if unvisited, send function there
                 isWord(word, index, new_word_so_far, new_visited_letters, new_words_so_far)
@@ -89,18 +97,20 @@ for letter in range(0, len(targetWord)):
 
 # write output
 
-
-
 print("Partial Anagrams:\t %d" % (len(partialAnagrams)))
 if len(partialAnagrams) == 0:
     print("None")
 else:
-    for element in partialAnagrams:
-        print("%s" % (element))
+    for each_entry in partialAnagrams:
+        for word in each_entry:
+            print("%s" % (word))
+        print()
 
 print("Complete Anagrams:\t %d" % (len(completeAnagrams)))
 if len(completeAnagrams) == 0:
     print("None")
 else:
-    for element in completeAnagrams:
-        print("%s" % (element))
+    for each_entry in completeAnagrams:
+        for word in each_entry:
+            print("%s" % (word))
+        print()
